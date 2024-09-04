@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999.xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/layout/layout}">
+<body>
+	<section layout:fragment="page-content">
+		<h2>Article Create Form</h2>
+		<form th:action="@{/admin/articles/save}"
+			th:object="${article}" method="post">
+			<div class="form-row">
+				
+				<input id="colid" type="hidden"
+						class="form-control" th:field="*{id}" />
+
+				<div class="col-md-6 form-group">
+					<label for="parentId">Collection</label>
+					<select name="parentId" class="form-control" id="parentId" th:field="*{parentId}" >
+						<option th:each="postCollection : ${postCollections}" th:value="${postCollection.id}" th:text="${postCollection.title}"></option>
+					</select>
+				</div>
+				
+				<div class="col-md-6 form-group">
+					<label for="name">Name</label> <input id="name" type="text"
+						class="form-control" th:field="*{name}" />
+				</div>
+				<div class="col-md-6 form-group">
+					<label for="title">Title</label> <input id="title" type="text"
+						class="form-control" th:field="*{title}" />
+				</div>
+				<div class="col-md-6 form-group">
+					<label for="description">Description</label>
+					<textarea id="description" name="description"
+						th:field="*{description}" rows="10" cols="30" class="form-control"></textarea>
+				</div>
+				<div class="col-md-6 form-group">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox"
+							th:field="*{publish}" id="publish" /> <label
+							class="form-check-label" for="publish"> Publish </label>
+					</div>
+				</div>
+				<div class="col-md-6 form-group">
+					<input id="submit" type="submit"> Save </input>
+				</div>
+
+			</div>
+		</form>
+	</section>
+</body>
+</html>

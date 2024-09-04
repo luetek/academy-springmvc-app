@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999.xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/layout}">
+<body>
+<section layout:fragment="page-content">
+    <h2>Markdown Editor</h2>
+    <div x-data="{editor:null}">
+        <div id="editor-window" style="height: 100vh"></div>
+        <div x-init="editor=useMarkdownEditor('editor-window')"  ></div>
+        <form th:action="@{/admin/markdown/save}" method="post">
+            <div class="col-md-6 form-group">
+                <label for="parentId">Collection</label>
+                <select name="parentId" class="form-control" id="parentId"  >
+                    <option th:each="article : ${articles}" th:value="${article.id}" th:text="${article.title}"></option>
+                </select>
+            </div>
+            <input type="text" name="fileName" />
+            <input id="markdownContentField" type="hidden" name="content" />
+            <input type="submit" @click="document.querySelector('#markdownContentField').value = editor.getMarkdown()" value="Save"/>
+        </form>
+    </div>
+    <h2>Markdown Editor End</h2>
+</section>
+</body>
+</html>

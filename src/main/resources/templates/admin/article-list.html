@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999.xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/layout}">
+<body>
+<section layout:fragment="page-content">
+    <div th:if="${articles.size() == 0}">No Article Found
+    </div>
+    <table th:if="${articles.size() > 0}">
+        <thead>
+        <tr>
+            <th>Slug</th>
+            <th>Title</th>
+            <th>Published</th>
+            <th>Collection</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="article: ${articles}">
+            <td><a
+                    th:href="@{/admin/articles/{id}/edit(id=${article.name})}">
+                <span th:text="${article.name}"> javascript-introduction</span>
+            </a></td>
+
+
+            <td th:text="${article.title}">Javascript Introduction</td>
+
+            <td th:text="${article.publish}">True</td>
+            <td><a
+                    th:href="@{/admin/post-collections/{id}/edit(id=${article.parent.name})}">
+                <span th:text="${article.parent.title}"> javascript-introduction</span>
+            </a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

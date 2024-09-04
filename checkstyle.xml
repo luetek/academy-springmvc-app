@@ -42,6 +42,8 @@
         <property name="max" value="160"/>
     </module>
 
+
+
     <!-- Checks for whitespace                               -->
     <!-- See https://checkstyle.org/config_whitespace.html -->
     <module name="FileTabCharacter"/>
@@ -81,6 +83,10 @@
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
         <module name="TypeName"/>
+
+        <module name="Indentation">
+            <property name="forceStrictCondition" value="true"/>
+        </module>
 
         <!-- Checks for imports                              -->
         <!-- See https://checkstyle.org/config_imports.html -->
@@ -128,7 +134,6 @@
         <module name="EqualsHashCode"/>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="SimplifyBooleanExpression"/>

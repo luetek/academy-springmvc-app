@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+*.db
+
+### node
+node
+node_modules
+

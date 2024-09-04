@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"  xmlns="http://www.w3.org/1999.xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Luetek Academy Admin Site</title>
+    <link  th:href="@{/css/bundle.css}" rel="stylesheet" />
+	<script th:src="@{/js/bundle.js}" defer></script>
+	<script th:src="@{/webjars/alpinejs/3.14.1/dist/cdn.min.js}" defer></script>
+	
+</head>
+<body>
+    <header>
+    <h3>Admin Panel</h3>
+    </header>
+    <section><h4>Side Menu</h4>  </section>	
+    <section layout:fragment ="page-content"></section>	
+    <footer>
+    Luetek.com 2024 All right reserved.
+    </footer>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.luetek.academy.publication.entities;
 
 import com.luetek.academy.storage.entities.Folder;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.SecondaryTable;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Entity
 @SecondaryTable(name = Article.TABLE_NAME)
+@DiscriminatorValue("ARTICLE")
 public class Article extends Folder {
     public static final String TABLE_NAME = "articles";
 

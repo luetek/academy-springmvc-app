@@ -1,19 +1,8 @@
 package com.luetek.academy.storage.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,38 +10,29 @@ import lombok.ToString;
 
 import java.util.List;
 
-@Table(name = "folders")
+/***
+ * Folder represent an actual folder in the file system or cloud storage like aws s3.
+ * ***
+ * If a user has access to any of the folder then he has access to children.
+ * ***
+ * We are not storing url because when we rename a folder we will need to rename
+ * all the child files and folders.
+ * ***
+ * Do we need to move folder - We don't have requirement to do that.
+ * ***
+ * Folder is abstract we will subclass it to create PostCollection, Article, etc.
+ * which might have extra attributes that need to be stored in .meta.json file
+ * and in db.
+ * */
+
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class  Folder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(unique=true, nullable = false)
-    @Size(min = 3, max = 20)
-    private String name;
-
-    @ManyToOne
-    @ToString.Exclude
-    @JoinColumn(name = "parent_id", insertable = false, updatable = false)
-    private Folder parent;
-    
-    @Column(name = "parent_id")
-    private Long parentId;
-
+public abstract class  Folder extends StoragePath {
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "parent_id")
     private List<Folder> children;
-
-    @OneToMany
-    @ToString.Exclude
-    @JoinColumn(name = "parent_id")
-    private List<File> files;
 }

@@ -16,6 +16,8 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 /***
  * File represent an actual file in the file system or cloud storage like aws s3.
  * File parent will be a folder whose parent can be another folder.
@@ -33,8 +35,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+@ToString
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "sub_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class StoragePath {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,4 +52,8 @@ public abstract class StoragePath {
 
     @Column(name = "parent_id")
     private Long parentId;
+
+    @Getter
+    @Column(name="sub_type", insertable = false, updatable = false)
+    protected String subType;
 }

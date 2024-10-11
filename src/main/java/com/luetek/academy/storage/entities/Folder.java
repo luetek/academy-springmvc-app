@@ -27,7 +27,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
 public abstract class  Folder extends StoragePath {

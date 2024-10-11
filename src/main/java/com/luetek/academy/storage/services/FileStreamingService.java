@@ -15,21 +15,13 @@ public class FileStreamingService {
         this.storageUrlService = storageUrlService;
     }
 
-    public void streamTo(String url, OutputStream out) {
-        var fileDto = this.storageUrlService.findStoragePathByUrl(url);
-        if (fileDto.isEmpty()) {
-            throw new RuntimeException("File not found");
-        }
-        this.storageService.streamTo(fileDto.get(), out);
-    }
-
-    public void streamTo(Long parentId, String relativeName, OutputStream out) {
-        var fileDto = this.storageUrlService.findStoragePathByParentIdAndName(parentId, relativeName);
+    public void streamTo(Long parentId, String fileName, OutputStream out) {
+        var fileDto = this.storageUrlService.findStoragePathByParentIdAndName(parentId, fileName);
 
         if (fileDto.isEmpty()) {
             throw new RuntimeException("File not found");
         }
 
-        this.storageService.streamTo(fileDto.get(), out);
+        this.storageService.streamTo(fileDto.get().getUrl(), out);
     }
 }

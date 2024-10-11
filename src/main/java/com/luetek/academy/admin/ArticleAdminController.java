@@ -41,6 +41,7 @@ public class ArticleAdminController {
 		log.info("Get createForm called");
 		model.addAttribute("postCollections", this.postCollectionRepository.findAll());
 		model.addAttribute("article", new Article());
+		model.addAttribute("operation", "create");
 		return "admin/article.html";
 	}
 	
@@ -49,6 +50,7 @@ public class ArticleAdminController {
 		log.info("Get EditForm  called");
 		var optionalCollection = this.folderRepository.findByName(articleName);
 		model.addAttribute("postCollections", this.postCollectionRepository.findAll());
+		model.addAttribute("operation", "edit");
 		model.addAttribute("article", optionalCollection.get());
 		return "admin/article.html";
 	}

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="children-list (children)">
+
+    <div th:if="${children != null && children.size() == 0}">No Children Found
+    </div>
+    <table th:if="${children != null && children.size() > 0}">
+        <thead>
+        <tr>
+            <th>Slug</th>
+            <th>Title</th>
+            <th>SubType</th>
+            <th>Published</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="child: ${children}">
+            <td><a
+                    th:href="@{/admin/{resource}/{id}/edit(id=${child.name}, resource=${child.linkType})}">
+                <span th:text="${child.name}"> javascript-introduction</span>
+            </a></td>
+            <td th:text="${child.title}">Javascript Introduction</td>
+            <td th:text="${child.subType}">Article</td>
+            <td th:text="${child.publish}">True</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

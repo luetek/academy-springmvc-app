@@ -15,7 +15,7 @@
 
 				<div class="col-md-6 form-group">
 					<label for="parentId">Collection</label>
-					<select name="parentId" class="form-control" id="parentId" th:field="*{parentId}" >
+					<select name="parentId" class="form-control" id="parentId" th:field="*{parentId}"  >
 						<option th:each="postCollection : ${postCollections}" th:value="${postCollection.id}" th:text="${postCollection.title}"></option>
 					</select>
 				</div>

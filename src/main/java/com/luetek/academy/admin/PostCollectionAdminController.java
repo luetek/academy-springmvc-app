@@ -1,5 +1,7 @@
 package com.luetek.academy.admin;
 
+import com.luetek.academy.admin.dto.ArticleDto;
+import com.luetek.academy.publication.entities.Article;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,8 @@ import com.luetek.academy.publication.entities.PostCollection;
 import com.luetek.academy.storage.repositories.FolderRepository;
 
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller()
@@ -42,7 +46,22 @@ public class PostCollectionAdminController {
 	public String getEditForm(@PathVariable String collectionName, Model model) {
 		log.info("Get EditForm  called");
 		var optionalCollection = this.folderRepository.findByName(collectionName);
-		model.addAttribute("postCollection", optionalCollection.get());
+		var collection = optionalCollection.get();
+		model.addAttribute("postCollection", collection);
+		model.addAttribute("operation", "edit");
+		model.addAttribute("children", collection.getChildren().stream().map(folder -> {
+			var article = new ArticleDto();
+			var entity = (Article)folder;
+			article.setId(entity.getId());
+			article.setLinkType("articles");
+			article.setDescription(entity.getDescription());
+			article.setSubType(entity.getSubType());
+			article.setName(entity.getName());
+			article.setTitle(entity.getTitle());
+			article.setPublish(entity.isPublish());
+			article.setOrderBy(entity.getOrderBy());
+			return article;
+		}).toList());
 		return "admin/post-collection.html";
 	}
 	

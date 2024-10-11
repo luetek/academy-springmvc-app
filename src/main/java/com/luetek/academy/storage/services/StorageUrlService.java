@@ -4,6 +4,7 @@ import com.luetek.academy.storage.dtos.PathUrlDto;
 import com.luetek.academy.storage.entities.Folder;
 import com.luetek.academy.storage.repositories.FileRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class StorageUrlService {
     private final FileRepository fileRepository;
 
-    public StorageUrlService(FileRepository fileRepository) {
+    public StorageUrlService(@Lazy FileRepository fileRepository) {
         this.fileRepository = fileRepository;
     }
 

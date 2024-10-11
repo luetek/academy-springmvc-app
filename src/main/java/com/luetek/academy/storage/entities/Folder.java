@@ -1,5 +1,6 @@
 package com.luetek.academy.storage.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -31,6 +32,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public abstract class  Folder extends StoragePath {
+
+    @JsonIgnore
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "parent_id")

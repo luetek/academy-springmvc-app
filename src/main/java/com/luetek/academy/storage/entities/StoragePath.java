@@ -1,5 +1,6 @@
 package com.luetek.academy.storage.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -39,17 +40,21 @@ import lombok.ToString;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "sub_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class StoragePath {
+
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Size(min = 3, max = 20)
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Folder parent;
 
+    @JsonIgnore
     @Column(name = "parent_id")
     private Long parentId;
 

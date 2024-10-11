@@ -23,7 +23,10 @@ public class StorageUrlService {
         return findStoragePathByParentAndName(null, url);
     }
 
-    public Optional<PathUrlDto> findStoragePathById(long id) {
+    public Optional<PathUrlDto> findStoragePathById(Long id) {
+        if (id == null)
+            return Optional.empty();
+
         var currentFileOpt = fileRepository.findById(id);
         if (currentFileOpt.isEmpty())
             return Optional.empty();
@@ -72,7 +75,7 @@ public class StorageUrlService {
     }
 
 
-    public Optional<PathUrlDto> findStoragePathByParentIdAndName(long parentId, String relativeName) {
+    public Optional<PathUrlDto> findStoragePathByParentIdAndName(Long parentId, String relativeName) {
         var currentFileOpt = findStoragePathById(parentId);
         if (currentFileOpt.isEmpty())
             return Optional.empty();

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Luetek Academy - Signup</title>
+
+    <link th:href="@{/css/bundle.css}" rel="stylesheet"/>
+
+    <script th:src="@{/js/bundle.js}" defer></script>
+    <script th:src="@{/webjars/alpinejs/3.14.1/dist/cdn.js}" defer></script>
+
+</head>
+<body>
+<h2>Signup</h2>
+<form th:action="@{/auth/signup}" th:object="${user}" method="post">
+    <div>
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" th:field="*{fullName}" required/>
+    </div>
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" required/>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required/>
+    </div>
+    <div>
+        <label for="confirmPassword">Re-enter Password:</label>
+        <input type="password" id="confirmPassword" th:field="*{confirmPassword}" required/>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="*{email}" required/>
+    </div>
+    <div>
+        <button type="submit">Sign Up</button>
+    </div>
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+</form>
+</body>
+</html>

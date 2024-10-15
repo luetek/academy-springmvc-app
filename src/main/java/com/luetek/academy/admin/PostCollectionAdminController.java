@@ -2,6 +2,7 @@ package com.luetek.academy.admin;
 
 import com.luetek.academy.admin.dto.ArticleDto;
 import com.luetek.academy.publication.entities.Article;
+import com.luetek.academy.publication.repositories.PostCollectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,15 +23,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin/post-collections")
 public class PostCollectionAdminController {
 	
-	private final FolderRepository folderRepository;
+	private final PostCollectionRepository postCollectionRepository;
 	
-	public PostCollectionAdminController(FolderRepository folderRepository) {
-		this.folderRepository = folderRepository;
+	public PostCollectionAdminController(PostCollectionRepository postCollectionRepository) {
+		this.postCollectionRepository = postCollectionRepository;
 	}
 
 	@GetMapping()
 	public String index(Model model) {
-		var collections = this.folderRepository.findAll();
+		var collections = this.postCollectionRepository.findAll();
 		model.addAttribute("collections", collections);
 		return "admin/post-collection-list.html";
 	}
@@ -45,7 +46,7 @@ public class PostCollectionAdminController {
 	@GetMapping("/{collectionName}/edit")
 	public String getEditForm(@PathVariable String collectionName, Model model) {
 		log.info("Get EditForm  called");
-		var optionalCollection = this.folderRepository.findByName(collectionName);
+		var optionalCollection = this.postCollectionRepository.findByName(collectionName);
 		var collection = optionalCollection.get();
 		model.addAttribute("postCollection", collection);
 		model.addAttribute("operation", "edit");
@@ -69,7 +70,7 @@ public class PostCollectionAdminController {
 	public String saveForm(@ModelAttribute PostCollection postCollection) {
 		log.info("Save PostCollection called");
 		log.info(postCollection.toString());
-		this.folderRepository.saveAndFlush(postCollection);
+		this.postCollectionRepository.saveAndFlush(postCollection);
 		return "redirect:/admin/post-collections";
 	}
 }

@@ -23,13 +23,13 @@ public class FileUploadService {
         this.storageService.upload(fileUrl, in);
     }
 
-    public void upload(long parentId, String fileName, InputStream in) {
+    public void upload(Long parentId, String fileName, InputStream in) {
         var folderDto = this.storageUrlService.findStoragePathById(parentId);
         var path =  (folderDto.isEmpty() ?  "/" : folderDto.get().getUrl()) + fileName;
         this.storageService.upload(path, in);
     }
 
-    public void upload(long parentId, String fileName, String in) {
+    public void upload(Long parentId, String fileName, String in) {
         var folderDto = this.storageUrlService.findStoragePathById(parentId);
         var path =  (folderDto.isEmpty() ?  "/" : folderDto.get().getUrl()) + fileName;
         this.storageService.upload(path, in);

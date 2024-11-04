@@ -11,5 +11,5 @@ public class PathDto {
     Long id;
     String name;
     Long parentId;
-
+    String subType;
 }

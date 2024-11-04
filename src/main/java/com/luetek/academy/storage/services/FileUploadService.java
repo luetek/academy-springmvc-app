@@ -35,7 +35,7 @@ public class FileUploadService {
         this.storageService.upload(path, in);
     }
 
-    public void rename(Long parentId, Object prevName, String newName) {
+    public void rename(Long parentId, String subType,  String prevName, String newName) {
         var folderDto = this.storageUrlService.findStoragePathById(parentId);
         var path =  (folderDto.isEmpty() ?  "/" : folderDto.get().getUrl());
         var oldUrl = path + prevName;
@@ -43,9 +43,9 @@ public class FileUploadService {
         this.storageService.rename(oldUrl, newUrl);
     }
 
-    public void createFolder(Long parentId, String name) {
+    public void createFolder(Long parentId, String subType, String name) {
         var folderDto = this.storageUrlService.findStoragePathById(parentId);
-        var path =  (folderDto.isEmpty() ?  "/" : folderDto.get().getUrl()) + name;
+        var path =  (folderDto.isEmpty() ?  "/" : folderDto.get().getUrl()) + subType + "/" + name;
         this.storageService.createFolder(path);
     }
 }

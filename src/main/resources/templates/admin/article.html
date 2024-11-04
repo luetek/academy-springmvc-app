@@ -6,6 +6,9 @@
 <body>
 	<section layout:fragment="page-content">
 		<h2>Article Create Form</h2>
+		<a th:if="${article.parent != null}"  th:href="@{/admin/post-collections/{id}/edit(id=${article.parent.name})}">
+			<span th:text="${article.parent.name}"> javascript-guide</span>
+		</a>
 		<form th:action="@{/admin/articles/save}"
 			th:object="${article}" method="post">
 			<div class="form-row">
@@ -46,6 +49,9 @@
 
 			</div>
 		</form>
+
+		<a th:href="@{|/admin/markdown/${article.parentId}/${article.name}/create|}">Create a Markdown Page</a>
+		<div th:replace="admin/fragments/children.html  :: children-list (children=${children})"></div>
 	</section>
 </body>
 </html>

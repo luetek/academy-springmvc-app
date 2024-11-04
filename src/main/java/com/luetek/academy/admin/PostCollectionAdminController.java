@@ -1,8 +1,10 @@
 package com.luetek.academy.admin;
 
 import com.luetek.academy.admin.dto.ArticleDto;
+import com.luetek.academy.authentication.entities.UsernamePasswordCredential;
 import com.luetek.academy.publication.entities.Article;
 import com.luetek.academy.publication.repositories.PostCollectionRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.luetek.academy.publication.entities.PostCollection;
-import com.luetek.academy.storage.repositories.FolderRepository;
 
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller()
@@ -65,11 +64,13 @@ public class PostCollectionAdminController {
 		}).toList());
 		return "admin/post-collection.html";
 	}
-	
+	// TODO:: We need a generic user Credential class
 	@PostMapping("/save")
-	public String saveForm(@ModelAttribute PostCollection postCollection) {
+	public String saveForm(@AuthenticationPrincipal UsernamePasswordCredential userDetails, @ModelAttribute PostCollection postCollection) {
 		log.info("Save PostCollection called");
 		log.info(postCollection.toString());
+		var parentAccount = userDetails.getAccount();
+		postCollection.setParentId(parentAccount.getId());
 		this.postCollectionRepository.saveAndFlush(postCollection);
 		return "redirect:/admin/post-collections";
 	}

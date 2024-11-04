@@ -33,8 +33,8 @@ public class HibernateInterceptor implements Interceptor {
             // first time save only
             // Serialize folder metadata
             var folderData = objectMapper.writeValueAsString(entity);
-            fileUploadService.createFolder(folderEntity.getParentId(), folderEntity.getName());
-            fileUploadService.upload(folderEntity.getParentId(), folderEntity.getName() + "/meta.json", folderData);
+            fileUploadService.createFolder(folderEntity.getParentId(), folderEntity.getSubType(), folderEntity.getName());
+            fileUploadService.upload(folderEntity.getParentId(), folderEntity.getSubType() + "/" + folderEntity.getName() + "/meta.json", folderData);
         }
         return false;
     }
@@ -54,13 +54,13 @@ public class HibernateInterceptor implements Interceptor {
             log.info(entity.toString());
             // Handle folder rename
             var idx = ArrayUtils.indexOf(propertyNames, "name");
-            var prevName = previousState[idx];
+            var prevName = (String)previousState[idx];
             if (!prevName.equals(folderEntity.getName())) {
-                fileUploadService.rename(folderEntity.getParentId(), prevName, folderEntity.getName());
+                fileUploadService.rename(folderEntity.getParentId(), folderEntity.getSubType() , prevName, folderEntity.getName());
             }
             // Serialize folder metadata
             var folderData = objectMapper.writeValueAsString(entity);
-            fileUploadService.upload(folderEntity.getParentId(), folderEntity.getName() + "/meta.json", folderData);
+            fileUploadService.upload(folderEntity.getParentId(), folderEntity.getSubType() + "/" + folderEntity.getName() + "/meta.json", folderData);
         }
         return false;
     }

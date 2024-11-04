@@ -13,6 +13,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,8 @@ import lombok.ToString;
  * which might have extra attributes that need to be stored in .meta.json file
  * and in db.
  * */
-@Table(name = "storage_paths")
+@Table(name = "storage_paths", uniqueConstraints = {
+    @UniqueConstraint(name = "parentIdAndNameUnique", columnNames = {"name", "parentId"})})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -46,7 +48,7 @@ public abstract class StoragePath {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Size(min = 3, max = 20)
+    @Size(min = 3, max = 32)
     private String name;
 
     @JsonIgnore

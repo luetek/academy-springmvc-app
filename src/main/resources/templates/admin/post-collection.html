@@ -16,10 +16,12 @@
 <body>
 	<section layout:fragment="page-content">
 		<h2>PostCollection Create Form</h2>
+		<a th:href="@{/admin/post-collections}">Got to list</a>
 		<form th:action="@{/admin/post-collections/save}"
 			th:object="${postCollection}" method="post">
 			<div class="form-row">
-				
+				<input id="parentId" type="hidden"
+					   class="form-control" th:field="*{parentId}" />
 				<input id="colid" type="hidden"
 						class="form-control" th:field="*{id}" />
 				
@@ -48,8 +50,7 @@
 				</div>
 
 			</div>
-
-
+			<a th:href="@{/admin/articles/create(parentId=${postCollection.id})}">Create an Article</a>
 			<div th:replace="admin/fragments/children.html  :: children-list (children=${children})">
 			</div>
 		</form>

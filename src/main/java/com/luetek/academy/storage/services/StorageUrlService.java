@@ -38,12 +38,12 @@ public class StorageUrlService {
         currentFileUrlDto.setId(current.getId());
         currentFileUrlDto.setName(current.getName());
         currentFileUrlDto.setParentId(current.getParentId());
-
+        currentFileUrlDto.setSubType(current.getSubType());
         // recursive call
         var parentUrlDtoOpt =  findStoragePathById(current.getParentId());
 
         var parentUrl =  parentUrlDtoOpt.isPresent() ? parentUrlDtoOpt.get().getUrl() : "";
-        currentFileUrlDto.setUrl(parentUrl  + currentFileUrlDto.getName() + (isFolder ? "/": ""));
+        currentFileUrlDto.setUrl(parentUrl  + current.getSubType() +  "/" +currentFileUrlDto.getName() + (isFolder ? "/": ""));
 
         return Optional.of(currentFileUrlDto);
     }

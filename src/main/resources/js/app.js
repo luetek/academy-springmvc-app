@@ -17,8 +17,8 @@ export function useMarkdownEditor(editorElement, commandBarElement) {
 	return etr;
 }
 
-function setMarkdown(editor) {
-    document.querySelector('#markdownContentField').value = editor.getMarkdown();
+function setMarkdown(editor, inputElement) {
+    inputElement.value = editor.getMarkdown();
     console.log("set Markdown");
 }
 window.echarts = echarts;

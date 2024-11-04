@@ -24,4 +24,14 @@ public class FileStreamingService {
 
         this.storageService.streamTo(fileDto.get().getUrl(), out);
     }
+
+    public void streamTo(Long fileId, OutputStream out) {
+        var fileDto = this.storageUrlService.findStoragePathById(fileId);
+
+        if (fileDto.isEmpty()) {
+            throw new RuntimeException("File not found");
+        }
+
+        this.storageService.streamTo(fileDto.get().getUrl(), out);
+    }
 }

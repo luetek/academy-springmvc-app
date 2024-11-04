@@ -15,6 +15,7 @@
 </head>
 <body>
 	<section layout:fragment="page-content">
+		<a th:href="@{/admin/post-collections/create}"> Create New Collection</a>
 		<div th:if="${collections.size() == 0}">No PostCollection Found
 		</div>
 		<table th:if="${collections.size() > 0}">

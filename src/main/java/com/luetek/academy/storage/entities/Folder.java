@@ -37,5 +37,5 @@ public abstract class  Folder extends StoragePath {
     @OneToMany
     @ToString.Exclude
     @JoinColumn(name = "parent_id")
-    private List<Folder> children;
+    private List<StoragePath> children;
 }

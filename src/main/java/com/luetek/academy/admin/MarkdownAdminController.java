@@ -80,11 +80,12 @@ public class MarkdownAdminController {
         log.info(markdownContent.toString());
         this.fileUploadService.upload(markdownContent.getParentId(), markdownContent.getFileName(), markdownContent.getContent());
         var file = new MarkdownFile();
+        file.setId(markdownContent.getId());
         file.setParentId(markdownContent.getParentId());
         file.setName(markdownContent.getFileName());
         file.setSize(markdownContent.getContent().length());
         this.fileRepository.saveAndFlush(file);
         var optArticle = this.articleRepository.findById(markdownContent.getParentId());
-        return "redirect:/admin/articles/" + optArticle.get().getName()+ "/edit";
+        return "redirect:/admin/articles/" + optArticle.get().getParentId() +"/" + optArticle.get().getName()+ "/edit";
     }
 }

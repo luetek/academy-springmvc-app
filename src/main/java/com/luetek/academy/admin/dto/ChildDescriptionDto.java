@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @ToString
 @Data
-public class ArticleDto {
+public class ChildDescriptionDto {
 
     private Long id;
 
@@ -13,7 +13,7 @@ public class ArticleDto {
 
     private String subType;
 
-    private String linkType;
+    private String linkPath;
 
     private String title;
 

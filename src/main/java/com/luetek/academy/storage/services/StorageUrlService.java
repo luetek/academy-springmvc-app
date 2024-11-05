@@ -1,8 +1,10 @@
 package com.luetek.academy.storage.services;
 
 import com.luetek.academy.storage.dtos.PathUrlDto;
+import com.luetek.academy.storage.entities.File;
 import com.luetek.academy.storage.entities.Folder;
 import com.luetek.academy.storage.repositories.FileRepository;
+import com.luetek.academy.storage.repositories.StoragePathRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -13,10 +15,10 @@ import java.util.Optional;
  * */
 @Component
 public class StorageUrlService {
-    private final FileRepository fileRepository;
+    private final StoragePathRepository storagePathRepository;
 
-    public StorageUrlService(@Lazy FileRepository fileRepository) {
-        this.fileRepository = fileRepository;
+    public StorageUrlService(@Lazy StoragePathRepository storagePathRepository) {
+        this.storagePathRepository = storagePathRepository;
     }
 
     public Optional<PathUrlDto> findStoragePathByUrl(String url) {
@@ -27,10 +29,10 @@ public class StorageUrlService {
         if (id == null)
             return Optional.empty();
 
-        var currentFileOpt = fileRepository.findById(id);
+        var currentFileOpt = storagePathRepository.findById(id);
         if (currentFileOpt.isEmpty())
             return Optional.empty();
-
+        var currentFile = currentFileOpt.get();
         var isFolder = currentFileOpt.get() instanceof Folder;
 
         var current = currentFileOpt.get();
@@ -43,8 +45,11 @@ public class StorageUrlService {
         var parentUrlDtoOpt =  findStoragePathById(current.getParentId());
 
         var parentUrl =  parentUrlDtoOpt.isPresent() ? parentUrlDtoOpt.get().getUrl() : "";
-        currentFileUrlDto.setUrl(parentUrl  + current.getSubType() +  "/" +currentFileUrlDto.getName() + (isFolder ? "/": ""));
-
+        if (currentFile instanceof File) {
+            currentFileUrlDto.setUrl(parentUrl  +  "/" +currentFileUrlDto.getName());
+        } else {
+            currentFileUrlDto.setUrl(parentUrl  + current.getSubType() +  "/" +currentFileUrlDto.getName() +  "/");
+        }
         return Optional.of(currentFileUrlDto);
     }
 
@@ -54,18 +59,24 @@ public class StorageUrlService {
         var restOfName = relativeUrl.substring(firstSlash + 1);
 
         var parentId = parentFolder != null? parentFolder.getId(): null;
-        var currentFileOpt = fileRepository.findFileByParentIdAndName(parentId, startingName);
+        var currentFileOpt = storagePathRepository.findFileByParentIdAndName(parentId, startingName);
         if (currentFileOpt.isEmpty()) {
             return Optional.empty();
         }
         var current = currentFileOpt.get();
         var currentFileUrlDto = new PathUrlDto();
         currentFileUrlDto.setId(current.getId());
+        currentFileUrlDto.setSubType(current.getSubType());
         currentFileUrlDto.setName(current.getName());
         currentFileUrlDto.setParentId(current.getParentId());
         var parentUrl =  parentFolder != null ? parentFolder.getUrl() : "";
         var isFolder = current instanceof Folder;
-        currentFileUrlDto.setUrl(parentUrl + startingName + (isFolder ? "/": ""));
+        if (isFolder) {
+            currentFileUrlDto.setUrl(parentUrl + startingName +  "/");
+        } else {
+            currentFileUrlDto.setUrl(parentUrl + startingName);
+        }
+
 
         if (StringUtils.isEmpty(restOfName)) {
             return Optional.of(currentFileUrlDto);

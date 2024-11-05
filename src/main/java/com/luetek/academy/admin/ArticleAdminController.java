@@ -1,6 +1,6 @@
 package com.luetek.academy.admin;
 
-import com.luetek.academy.admin.dto.ArticleDto;
+import com.luetek.academy.admin.dto.ChildDescriptionDto;
 import com.luetek.academy.publication.entities.Article;
 import com.luetek.academy.publication.repositories.ArticleRepository;
 import com.luetek.academy.publication.repositories.PostCollectionRepository;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/admin/articles")
 public class ArticleAdminController {
 
-	private final FolderRepository folderRepository;
 	private final PostCollectionRepository postCollectionRepository;
 	private final ArticleRepository articleRepository;
 	public ArticleAdminController( PostCollectionRepository postCollectionRepository,
@@ -29,7 +28,6 @@ public class ArticleAdminController {
 								   FolderRepository folderRepository) {
 		this.postCollectionRepository = postCollectionRepository;
 		this.articleRepository = articleRepository;
-		this.folderRepository = folderRepository;
 	}
 
 	@GetMapping()
@@ -50,33 +48,29 @@ public class ArticleAdminController {
 		return "admin/article.html";
 	}
 	
-	@GetMapping("/{articleName}/edit")
-	public String getEditForm(@PathVariable String articleName, Model model) {
+	@GetMapping("/{collectionId}/{articleName}/edit")
+	public String getEditForm(@PathVariable Long collectionId, @PathVariable String articleName, Model model) {
 		log.info("Get EditForm  called");
-		var optionalCollection = this.folderRepository.findByName(articleName);
+		var optionalArticle = this.articleRepository.findByParentIdAndName(collectionId, articleName);
+		var article = optionalArticle.get();
 		model.addAttribute("postCollections", this.postCollectionRepository.findAll());
 		model.addAttribute("operation", "edit");
-		model.addAttribute("article", optionalCollection.get());
-		model.addAttribute("children", optionalCollection.get().getChildren().stream().map(folder -> {
-			var article = new ArticleDto();
-			var entity = (Article)folder;
-			article.setId(entity.getId());
-			article.setLinkType(getSubTypeToLinkTypeMapping(entity.getSubType()));
-			article.setDescription(entity.getDescription());
-			article.setSubType(entity.getSubType());
-			article.setName(entity.getName());
-			article.setTitle(entity.getTitle());
-			article.setPublish(entity.isPublish());
-			article.setOrderBy(entity.getOrderBy());
-			return article;
+		model.addAttribute("article", article);
+		model.addAttribute("children", article.getChildren().stream().map(item -> {
+			var child = new ChildDescriptionDto();
+			child.setId(item.getId());
+			child.setLinkPath(getSubTypeToLinkMapping(item.getSubType(), item.getParentId(), item.getName()));
+			child.setSubType(item.getSubType());
+			child.setName(item.getName());
+			return child;
 		}).toList());
 
 		return "admin/article.html";
 	}
 
-	private String getSubTypeToLinkTypeMapping(String subType) {
+	private String getSubTypeToLinkMapping(String subType, Long parentId, String name) {
 		if ("MARKDOWN".equals(subType))
-			return  "markdown";
+			return  "markdown/" + parentId + "/" + name;
 		throw new RuntimeException("Unknown mapping");
 	}
 
@@ -84,7 +78,7 @@ public class ArticleAdminController {
 	public String saveForm(@ModelAttribute Article article) {
 		log.info("Save Article called");
 		log.info(article.toString());
-		this.folderRepository.saveAndFlush(article);
+		this.articleRepository.saveAndFlush(article);
 		return "redirect:/admin/articles";
 	}
 }

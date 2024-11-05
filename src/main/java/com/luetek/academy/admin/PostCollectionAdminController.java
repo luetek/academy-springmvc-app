@@ -1,6 +1,6 @@
 package com.luetek.academy.admin;
 
-import com.luetek.academy.admin.dto.ArticleDto;
+import com.luetek.academy.admin.dto.ChildDescriptionDto;
 import com.luetek.academy.authentication.entities.UsernamePasswordCredential;
 import com.luetek.academy.publication.entities.Article;
 import com.luetek.academy.publication.repositories.PostCollectionRepository;
@@ -50,10 +50,10 @@ public class PostCollectionAdminController {
 		model.addAttribute("postCollection", collection);
 		model.addAttribute("operation", "edit");
 		model.addAttribute("children", collection.getChildren().stream().map(folder -> {
-			var article = new ArticleDto();
+			var article = new ChildDescriptionDto();
 			var entity = (Article)folder;
 			article.setId(entity.getId());
-			article.setLinkType("articles");
+			article.setLinkPath("articles/" + collection.getId() + "/" + entity.getName());
 			article.setDescription(entity.getDescription());
 			article.setSubType(entity.getSubType());
 			article.setName(entity.getName());

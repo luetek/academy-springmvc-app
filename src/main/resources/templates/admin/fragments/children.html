@@ -17,7 +17,7 @@
         <tbody>
         <tr th:each="child: ${children}">
             <td><a
-                    th:href="@{/admin/{resource}/{id}/edit(id=${child.name}, resource=${child.linkType})}">
+                    th:href="@{/admin/{resourceLink}/edit(resourceLink=${child.linkPath})}">
                 <span th:text="${child.name}"> javascript-introduction</span>
             </a></td>
             <td th:text="${child.title}">Javascript Introduction</td>

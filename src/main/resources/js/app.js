@@ -6,21 +6,16 @@ import '../scss/app.scss';
 
 console.log("This is called");
 //https://jefago.github.io/tiny-markdown-editor/
-export function useMarkdownEditor(editorElement, commandBarElement) {
+export function useMarkdownEditor(editorElement, inputElement ) {
 
 	console.log("Init MD Editor");
 	const etr = new Cherry({
 	  id: editorElement,
-	  value: '# welcome to cherry editor!',
+	  value: inputElement.value,
 	  locale:'en_US',
 	});
 	return etr;
 }
 
-function setMarkdown(editor, inputElement) {
-    inputElement.value = editor.getMarkdown();
-    console.log("set Markdown");
-}
 window.echarts = echarts;
-window.setMarkdown = setMarkdown;
 window.useMarkdownEditor = useMarkdownEditor;

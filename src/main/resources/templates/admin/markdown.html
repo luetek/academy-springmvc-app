@@ -8,7 +8,7 @@
     <h2>Markdown Editor</h2>
     <div x-data="{editor:null}">
         <div id="editor-window" style="height: 100vh"></div>
-        <div x-init="editor=useMarkdownEditor('editor-window'); setMarkdown(editor, document.querySelector('#markdownContentField'))"  ></div>
+        <div x-init="editor=useMarkdownEditor('editor-window', document.querySelector('#markdownContentField'))"  ></div>
         <form th:action="@{/admin/markdown/save}" th:object="${markdownContent}" method="post">
             <label for="name">File Name</label><input id="name" type="text" name="fileName" th:field="*{fileName}"  />
             <input id="id" type="hidden" name="parentId" th:field="*{id}" />
